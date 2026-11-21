@@ -59,6 +59,16 @@ export const OFFICIAL_URLS = {
 // This file also creates /ads.txt automatically from your Publisher ID.
 
 // ---------------------------------------------------------------------
+// GOOGLE SEARCH CONSOLE (HTML tag method)
+// ---------------------------------------------------------------------
+// In Search Console choose "HTML tag". Google shows a tag like:
+//   <meta name="google-site-verification" content="AbCdEf123..." />
+// Paste ONLY the content value below (without quotes inside the quotes).
+// Leave empty to skip. The file method (public/google....html) still works too.
+
+export const GOOGLE_VERIFICATION = "9iNs-VNr-hz4JVhilPK7P6ULKP5JDUi1p2TKCyc-CaI";
+
+// ---------------------------------------------------------------------
 // 3. ADSTERRA
 // ---------------------------------------------------------------------
 // Your Adsterra code has two parts: a <script src="..."> and a
