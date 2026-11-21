@@ -1,6 +1,6 @@
 import "./globals.css";
 import Script from "next/script";
-import { ADSENSE } from "@/site.config";
+import { ADSENSE, GOOGLE_VERIFICATION } from "@/site.config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AdSlot from "@/components/AdSlot";
@@ -41,6 +41,7 @@ export const metadata = {
     description: SITE.description,
   },
   robots: { index: true, follow: true },
+  ...(GOOGLE_VERIFICATION ? { verification: { google: GOOGLE_VERIFICATION } } : {}),
 };
 
 export const viewport = {
