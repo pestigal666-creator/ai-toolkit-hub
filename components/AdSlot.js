@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ADSENSE, ADSTERRA } from "@/site.config";
 
 // Shows a real ad when site.config.js is set up, and a clearly labeled
 // placeholder box otherwise.
 // Variants: "header" (leaderboard), "inContent" (in-article), "sidebar" (tall).
-// Priority: Adsterra (for its chosen placement), then AdSense, then placeholder.
+// Priority for each box: Adsterra, then AdSense, then placeholder.
 
 const VARIANTS = {
   header: { label: "Header Banner", size: "728 x 90 (responsive)", box: "min-h-[90px]" },
@@ -14,36 +14,75 @@ const VARIANTS = {
   sidebar: { label: "Sidebar", size: "300 x 600", box: "min-h-[250px] lg:min-h-[600px]" },
 };
 
+// Builds the small page that runs an Adsterra "Banner" unit inside an iframe.
+function bannerDocument(unit) {
+  const options = JSON.stringify({
+    key: unit.key,
+    format: "iframe",
+    height: unit.height,
+    width: unit.width,
+    params: {},
+  });
+  return (
+    '<!doctype html><html><head><meta charset="utf-8">' +
+    "<style>html,body{margin:0;padding:0;background:transparent}</style></head><body>" +
+    "<script>atOptions = " +
+    options +
+    ";<\/script>" +
+    '<script src="' +
+    unit.scriptSrc +
+    '"><\/script>' +
+    "</body></html>"
+  );
+}
+
 export default function AdSlot({ variant = "inContent", className = "" }) {
   const config = VARIANTS[variant] || VARIANTS.inContent;
 
-  const useAdsterra = Boolean(
-    ADSTERRA.enabled && ADSTERRA.scriptSrc && ADSTERRA.containerId && ADSTERRA.placement === variant
-  );
+  const unit = ADSTERRA.enabled && ADSTERRA.slots ? ADSTERRA.slots[variant] : null;
+  const isBanner = Boolean(unit && unit.type === "banner" && unit.key && unit.scriptSrc && unit.width && unit.height);
+  const isNative = Boolean(unit && unit.type === "native" && unit.scriptSrc && unit.containerId);
+  const useAdsterra = isBanner || isNative;
 
-  const slotId = ADSENSE.slots ? ADSENSE.slots[variant] : "";
-  const useAdsense = Boolean(!useAdsterra && ADSENSE.enabled && ADSENSE.publisherId && slotId);
+  const adsenseSlot = ADSENSE.slots ? ADSENSE.slots[variant] : "";
+  const useAdsense = Boolean(!useAdsterra && ADSENSE.enabled && ADSENSE.publisherId && adsenseSlot);
 
-  const adsterraWrap = useRef(null);
+  const asideRef = useRef(null);
+  const nativeWrap = useRef(null);
   const adsensePushed = useRef(false);
+  const [fits, setFits] = useState(true);
 
+  // A fixed-size banner is hidden when the screen is narrower than the banner.
   useEffect(() => {
-    if (!useAdsterra) return undefined;
-    const wrap = adsterraWrap.current;
+    if (!isBanner) return undefined;
+    const el = asideRef.current;
+    if (!el) return undefined;
+    const check = () => setFits(el.clientWidth >= unit.width);
+    check();
+    if (typeof ResizeObserver === "undefined") return undefined;
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isBanner, unit && unit.width]);
+
+  // Native banner: add the script after the container exists.
+  useEffect(() => {
+    if (!isNative) return undefined;
+    const wrap = nativeWrap.current;
     if (!wrap) return undefined;
 
     const container = wrap.querySelector("[data-adsterra-container]");
     const script = document.createElement("script");
     script.async = true;
     script.setAttribute("data-cfasync", "false");
-    script.src = ADSTERRA.scriptSrc;
+    script.src = unit.scriptSrc;
     wrap.appendChild(script);
 
     return () => {
       script.remove();
       if (container) container.innerHTML = "";
     };
-  }, [useAdsterra]);
+  }, [isNative]);
 
   useEffect(() => {
     if (!useAdsense || adsensePushed.current) return;
@@ -56,10 +95,31 @@ export default function AdSlot({ variant = "inContent", className = "" }) {
   }, [useAdsense]);
 
   let content;
-  if (useAdsterra) {
+  let showLabel = true;
+
+  if (isBanner) {
+    if (fits) {
+      content = (
+        <div className="flex w-full justify-center overflow-hidden">
+          <iframe
+            title="Advertisement"
+            width={unit.width}
+            height={unit.height}
+            scrolling="no"
+            frameBorder="0"
+            style={{ border: 0, display: "block", maxWidth: "100%" }}
+            srcDoc={bannerDocument(unit)}
+          />
+        </div>
+      );
+    } else {
+      content = null;
+      showLabel = false;
+    }
+  } else if (isNative) {
     content = (
-      <div ref={adsterraWrap} className="flex w-full justify-center overflow-hidden">
-        <div id={ADSTERRA.containerId} data-adsterra-container="true" />
+      <div ref={nativeWrap} className="flex w-full justify-center overflow-hidden">
+        <div id={unit.containerId} data-adsterra-container="true" />
       </div>
     );
   } else if (useAdsense) {
@@ -68,7 +128,7 @@ export default function AdSlot({ variant = "inContent", className = "" }) {
         className="adsbygoogle block w-full overflow-hidden"
         style={{ display: "block" }}
         data-ad-client={ADSENSE.publisherId}
-        data-ad-slot={slotId}
+        data-ad-slot={adsenseSlot}
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
@@ -85,8 +145,10 @@ export default function AdSlot({ variant = "inContent", className = "" }) {
   }
 
   return (
-    <aside aria-label="Advertisement" data-ad-slot={variant} className={`w-full ${className}`}>
-      <p className="mb-1 text-center text-[10px] uppercase tracking-widest text-slate-500">Advertisement</p>
+    <aside ref={asideRef} aria-label="Advertisement" data-ad-slot={variant} className={`w-full ${className}`}>
+      {showLabel ? (
+        <p className="mb-1 text-center text-[10px] uppercase tracking-widest text-slate-500">Advertisement</p>
+      ) : null}
       {content}
     </aside>
   );
