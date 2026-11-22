@@ -27,6 +27,25 @@ export const AFFILIATE_LINKS = {
   midjourney: "https://whop.com/toolsuite/buy-vip?a=sohailumar",
 };
 
+// Custom button text for tools whose link does NOT go to the tool's own
+// official site (for example, a bundle or reseller page). It is used only
+// while that tool has a link pasted above. Tools not listed here keep the
+// normal "Visit Tool" button.
+export const LINK_LABELS = {
+  chatgpt: {
+    label: "Get via ToolSuite VIP",
+    note: "Opens ToolSuite VIP, a third-party bundle. This is not the official ChatGPT site.",
+  },
+  claude: {
+    label: "Get via ToolSuite VIP",
+    note: "Opens ToolSuite VIP, a third-party bundle. This is not the official Claude site.",
+  },
+  midjourney: {
+    label: "Get via ToolSuite VIP",
+    note: "Opens ToolSuite VIP, a third-party bundle. This is not the official Midjourney site.",
+  },
+};
+
 // Fallback used when an affiliate link above is empty.
 export const OFFICIAL_URLS = {
   chatgpt: "https://chatgpt.com",
@@ -71,19 +90,46 @@ export const GOOGLE_VERIFICATION = "9iNs-VNr-hz4JVhilPK7P6ULKP5JDUi1p2TKCyc-CaI"
 // ---------------------------------------------------------------------
 // 3. ADSTERRA
 // ---------------------------------------------------------------------
-// Your Adsterra code has two parts: a <script src="..."> and a
-// <div id="container-...">. Paste only the src URL and the div id below.
+// Each ad box on the site (header, sidebar, inContent) can show one Adsterra
+// ad unit. Two kinds are supported:
 //
-// placement: which ad box on each page shows Adsterra instead of the
-// AdSense/placeholder box. Use "inContent", "sidebar" or "header".
-// Keep it to ONE placement, because the container id can appear only
-// once per page.
+//   type "banner" (Adsterra "Banner", iframe code with atOptions):
+//       key, width, height, scriptSrc
+//       (copy them from the atOptions block and the <script src> line)
+//   type "native" (Adsterra "Native Banner", code with a container div):
+//       scriptSrc, containerId
+//       Use a native unit in only ONE box, since a container id can appear
+//       only once per page.
+//
+// To turn one box back to AdSense or the placeholder, delete its entry.
+// To turn off all Adsterra ads, set enabled to false.
 
 export const ADSTERRA = {
   enabled: true,
-  placement: "inContent",
-  scriptSrc: "https://bauval.org/21/0472eb139ef8c67e51d9be97bcf0ab04",
-  containerId: "container-0472eb139ef8c67e51d9be97bcf0ab04",
+  slots: {
+    // 728x90 banner at the top of every page (hidden on narrow screens)
+    header: {
+      type: "banner",
+      key: "1af48d8f58a0df25edb00bf7af43c2f0",
+      width: 728,
+      height: 90,
+      scriptSrc: "https://bauval.org/22/1af48d8f58a0df25edb00bf7af43c2f0",
+    },
+    // 160x600 banner in the sidebar
+    sidebar: {
+      type: "banner",
+      key: "b8d4d0df55d0ffcfb5172be7df1fb340",
+      width: 160,
+      height: 600,
+      scriptSrc: "https://bauval.org/22/b8d4d0df55d0ffcfb5172be7df1fb340",
+    },
+    // Native banner inside articles and lists
+    inContent: {
+      type: "native",
+      scriptSrc: "https://bauval.org/21/c59795c2e5457e3e85d30d70378ed0b4",
+      containerId: "container-c59795c2e5457e3e85d30d70378ed0b4",
+    },
+  },
 };
 
 export const ADSENSE = {
@@ -94,4 +140,3 @@ export const ADSENSE = {
     inContent: "", // In-article / between sections
     sidebar: "", // Sidebar (desktop)
   },
-};
