@@ -19,7 +19,7 @@ export const AFFILIATE_LINKS = {
   capcut: "https://capcut.com",
   runway: "https://runwayml.com",
   descript: "https://descript.com",
-  elevenlabs: "", // empty: uses the official site
+  elevenlabs: "https://try.elevenlabs.io/tl9r2b0ip5ye", // empty: uses the official site
   "murf-ai": "https://murf.ai",
   "otter-ai": "https://otter.ai",
   canva: "https://canva.com",
