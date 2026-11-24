@@ -602,6 +602,106 @@ Mark any claim that needs a source with [CHECK FACT].`,
       },
     ],
   },
+  {
+    slug: "how-to-make-ai-voiceovers-with-elevenlabs",
+    title: "How to Make AI Voiceovers with ElevenLabs: A Beginner Guide",
+    metaTitle: "ElevenLabs Voiceover Guide for Beginners",
+    description:
+      "A beginner-friendly walkthrough of making a voiceover with ElevenLabs: writing the script, choosing a voice, fixing pronunciation, exporting and avoiding common mistakes.",
+    category: "Video",
+    date: "2026-11-24",
+    relatedTools: ["elevenlabs", "descript", "capcut", "murf-ai"],
+    intro:
+      "ElevenLabs is an AI voice platform that turns written text into spoken audio, and it is popular with YouTubers, course creators and podcasters. This guide walks you through a first voiceover from start to finish: preparing the script, picking a voice, adjusting delivery, fixing pronunciation and exporting a clean file. Plans, limits and features change often, so check the official pricing page for current details before you rely on any allowance.",
+    sections: [
+      {
+        heading: "What ElevenLabs is good for",
+        bullets: [
+          "Narration for faceless YouTube videos and explainers",
+          "Voiceovers for online course lessons and presentations",
+          "Audio versions of blog posts and newsletters",
+          "Quick draft narration to test a script before recording your own voice",
+        ],
+        outro:
+          "It is less suited to anything that needs real human emotion or live interaction. Always listen to a sample before you commit to a project.",
+      },
+      {
+        heading: "Step 1: Prepare your script for speech",
+        paragraphs: [
+          "Text written to be read on a screen often sounds stiff when spoken. Before you paste it in, make a few edits:",
+        ],
+        bullets: [
+          "Use short sentences and everyday words",
+          "Spell out numbers, symbols and abbreviations the way you want them spoken",
+          "Use commas and full stops where you want the voice to pause",
+          "Split long scripts into sections of a paragraph or two, so you can fix mistakes without regenerating everything",
+        ],
+      },
+      {
+        heading: "Step 2: Choose a voice",
+        paragraphs: [
+          "Create an account and open the text-to-speech tool. Browse the available voices and filter by things like gender, accent and style if the options are offered. Pick a voice that matches your niche: calm and clear for tutorials, warmer for storytelling, more energetic for entertainment.",
+          "Test the same short paragraph with two or three voices. The best choice is usually obvious after you hear them back to back.",
+        ],
+      },
+      {
+        heading: "Step 3: Adjust the delivery",
+        paragraphs: [
+          "The tool usually offers settings that change how steady or expressive a voice sounds, and sometimes speed as well. Setting names and ranges change, so read the short description next to each control.",
+          "A good method is to change one setting at a time and regenerate the same sentence. That way you can hear exactly what each setting does instead of guessing.",
+        ],
+      },
+      {
+        heading: "Step 4: Fix pronunciation",
+        paragraphs: [
+          "Names, brands, acronyms and technical words are the most common problems. If a word is wrong, try respelling it the way it sounds, adding a hyphen or comma, or using any pronunciation feature your plan offers. Then regenerate only that sentence.",
+          "Keep a small list of fixes you have made. You will reuse them across videos.",
+        ],
+      },
+      {
+        heading: "Step 5: Export and edit",
+        paragraphs: [
+          "Download the audio and place it in your video editor. If you use CapCut or a similar editor, put the voice on its own track, add quiet background music underneath and cut any awkward gaps. Listen to the whole video once with headphones before publishing.",
+        ],
+      },
+      {
+        heading: "Check usage rights before you monetize",
+        paragraphs: [
+          "Free and paid plans can come with different rules about commercial use and attribution. Read the current terms and pricing page for your plan before you publish audio on a monetized channel or sell it inside a product.",
+          "Never clone or imitate a real person's voice without their clear permission. Also check YouTube's current policy on synthetic or altered content to see whether you need to disclose AI narration. A short note in the video description is a simple way to be open with viewers.",
+        ],
+      },
+      {
+        heading: "Common mistakes",
+        bullets: [
+          "Generating a full script before testing one paragraph",
+          "Leaving long sentences with no punctuation",
+          "Skipping the pronunciation check for names and terms",
+          "Using background music that is louder than the voice",
+          "Assuming free-plan audio can be used commercially without reading the terms",
+        ],
+      },
+      {
+        heading: "Alternatives to compare",
+        paragraphs: [
+          "ElevenLabs is not the only option. Murf AI offers a studio-style editor, Descript is useful if you also record yourself and want to edit by text, and CapCut includes built-in text-to-speech inside a video editor. You can read each review in our tools directory and compare them with the same short script.",
+        ],
+      },
+      {
+        heading: "Affiliate note",
+        paragraphs: [
+          "Some links on this site may be affiliate links, so we may earn a commission if you buy through them, at no extra cost to you. Our Affiliate Disclosure page explains how this works.",
+        ],
+      },
+      {
+        heading: "Final thoughts",
+        paragraphs: [
+          "A good voiceover depends more on a clear script, a suitable voice and careful editing than on any single setting. Start with a short test, fix what sounds off and build a routine you can repeat for every video.",
+          "If you need help writing the script, try our free prompt generator, then rewrite the result in your own words.",
+        ],
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug) {
